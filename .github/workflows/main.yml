@@ -6,40 +6,35 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  testAndBuild:
-    name: Test and build
+  buildForSomePlatforms:
+    name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - unity-ci-test
+        unityVersion:
+          - 2019.2.0f1
+        targetPlatform:
+          - StandaloneWindows # Build a Windows standalone.
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
     steps:
-      # Checkout
       - uses: actions/checkout@v2
-
-      # Cache
+        with:
+          lfs: true
       - uses: actions/cache@v1.1.0
         with:
-          path: unity-ci-test/Library
-          key: Library-unity-ci-test-StandaloneWindows64
-
-      # Test
-      - uses: webbertakken/unity-test-runner@v1.3
-        id: testRunner
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library-${{ matrix.projectPath }}-
+            Library-
+      - uses: webbertakken/unity-builder@v0.11
         with:
-          projectPath: unity-ci-test
-          unityVersion: 2019.2.0f1
-
-      # Test Output
-      - uses: actions/upload-artifact@v1
-        with:
-          name: Test results
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
-
-      # Build
-      - uses: webbertakken/unity-builder@v0.12
-        with:
-          projectPath: unity-ci-test
-          unityVersion: 2019.2.0f1
-          targetPlatform: StandaloneWindows64
-
-      # Build Output
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          targetPlatform: ${{ matrix.targetPlatform }}
       - uses: actions/upload-artifact@v1
         with:
           name: Build
