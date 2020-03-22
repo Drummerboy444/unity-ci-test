@@ -3,7 +3,7 @@ on: push
 jobs:
   tests:
     name: Unit Tests
-    runs-on: ubunto-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
