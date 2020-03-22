@@ -10,6 +10,10 @@ jobs:
     name: Test and build
     runs-on: ubuntu-latest
     steps:
+      # Activate
+      - name: Activate Unity
+        uses: webbertakken/unity-activate@v1.2
+
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -17,7 +21,7 @@ jobs:
       - uses: actions/cache@v1.1.0
         with:
           path: unity-ci-test/Library
-          key: Library-unity-ci-test-StandaloneWindows
+          key: Library-unity-ci-test-StandaloneWindows64
           restore-keys: |
             Library-unity-ci-test-
             Library-
@@ -27,7 +31,7 @@ jobs:
         with:
           projectPath: unity-ci-test
           unityVersion: 2019.2.0f1
-          targetPlatform: StandaloneWindows
+          targetPlatform: StandaloneWindows64
 
       # Build Output
       - uses: actions/upload-artifact@v1
