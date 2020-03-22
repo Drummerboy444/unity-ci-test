@@ -1,5 +1,10 @@
 name: Main
+
 on: push
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
 jobs:
   tests:
     name: Unit Tests
