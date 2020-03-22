@@ -6,28 +6,35 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  readmeWorkflow:
-    name: Readme Workflow
+  testAndBuild:
+    name: Test and build
     runs-on: ubuntu-latest
     steps:
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          lfs: true
 
       # Cache
+      - name: Cache
       - uses: actions/cache@v1.1.0
         with:
           path: unity-ci-test/Library
-          key: Library-unity-ci-test-WebGL
+          key: Library-unity-ci-test-StandaloneWindows64
 
       # Test
       - name: Run tests
         uses: webbertakken/unity-test-runner@v1.3
+        id: testRunner
         with:
           projectPath: unity-ci-test
           unityVersion: 2019.2.0f1
+
+      # Test Output
+      - name: Test output
+        uses: actions/upload-artifact@v1
+        with:
+          name: Test results
+          path: ${{ steps.testRunner.outputs.artifactsPath }}
 
       # Build
       - name: Build project
@@ -37,7 +44,7 @@ jobs:
           unityVersion: 2019.2.0f1
           targetPlatform: StandaloneWindows64
 
-      # Output
+      # Build Output
       - uses: actions/upload-artifact@v1
         with:
           name: Build
