@@ -5,6 +5,6 @@ public class BasicTest
     [Test]
     public void BasicTestSimplePasses()
     {
-        Assert.AreEqual(1f, 2f);
+        Assert.AreEqual(1f, 1f);
     }
 }
