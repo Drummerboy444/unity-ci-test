@@ -14,9 +14,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - uses: actions/cache@v1.1.0
+        with:
+          path: unity-ci-test/Library
+          key: Library-unity-ci-test-StandaloneWindows64
+          restore-keys: |
+            Library-unity-ci-test-
+            Library-
+
       # Build
-      - name: Build project
-        uses: webbertakken/unity-builder@v0.12
+      - uses: webbertakken/unity-builder@v0.12
         with:
           projectPath: unity-ci-test
           unityVersion: 2019.2.0f1
