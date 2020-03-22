@@ -13,12 +13,10 @@ jobs:
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          lfs: true
 
       # Cache
       - name: Cache
-      - uses: actions/cache@v1.1.0
+        uses: actions/cache@v1.1.0
         with:
           path: unity-ci-test/Library
           key: Library-unity-ci-test-StandaloneWindows64
