@@ -6,27 +6,39 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  tests:
-    name: Unit Tests
+  readmeWorkflow:
+    name: Readme Workflow
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        projectPath:
-          - unity-ci-test
-        unityVersion:
-          - 2019.2.0f1
-        testMode:
-          - playmode
     steps:
-      - uses: webbertakken/unity-test-runner@v1.4
-        id: tests
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
-          testMode: ${{ matrix.testMode }}
-          artifactsPath: ${{ matrix.testMode }}-artifacts
+          lfs: true
+
+      # Cache
+      - uses: actions/cache@v1.1.0
+        with:
+          path: unity-ci-test/Library
+          key: Library-unity-ci-test-WebGL
+
+      # Test
+      - name: Run tests
+        uses: webbertakken/unity-test-runner@v1.3
+        with:
+          projectPath: unity-ci-test
+          unityVersion: 2019.2.0f1
+
+      # Build
+      - name: Build project
+        uses: webbertakken/unity-builder@v0.10
+        with:
+          projectPath: unity-ci-test
+          unityVersion: 2019.2.0f1
+          targetPlatform: WebGL
+
+      # Output
       - uses: actions/upload-artifact@v1
         with:
-          name: Test results for ${{ matrix.testMode }}
-          path: ${{ steps.tests.outputs.artifactsPath }}
+          name: Build
+          path: build
