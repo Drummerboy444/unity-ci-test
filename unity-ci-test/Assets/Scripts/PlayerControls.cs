@@ -2,7 +2,8 @@
 
 public class PlayerControls : MonoBehaviour
 {
-    public float speed = 1f;
+    [SerializeField]
+    private Player player = null;
 
     private void Update()
     {
@@ -13,6 +14,6 @@ public class PlayerControls : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) direction += Vector3.down;
         if (Input.GetKey(KeyCode.D)) direction += Vector3.right;
 
-        transform.Translate(direction.normalized * Time.deltaTime * speed);
+        player.Move(direction);
     }
 }
