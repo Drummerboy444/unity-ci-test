@@ -17,8 +17,7 @@ jobs:
         unityVersion:
           - 2019.2.0f1
         targetPlatform:
-          - StandaloneWindows # Build a Windows standalone.
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - StandaloneWindows64
     steps:
       - uses: actions/checkout@v2
         with:
@@ -30,10 +29,14 @@ jobs:
           restore-keys: |
             Library-${{ matrix.projectPath }}-
             Library-
-      - uses: webbertakken/unity-test-runner@v1.4
+      - uses: webbertakken/unity-test-runner@v1.6
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
+      - uses: actions/upload-artifact@v1
+        with:
+          name: Test results
+          path: artifacts
       - uses: webbertakken/unity-builder@v0.11
         with:
           projectPath: ${{ matrix.projectPath }}
