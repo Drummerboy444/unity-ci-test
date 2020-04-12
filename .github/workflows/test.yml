@@ -2,8 +2,8 @@ name: Test
 
 on:
   push:
-    pranches:
-      - merge-test
+    branches:
+      - master
 
 jobs:
   echo:
