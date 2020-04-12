@@ -1,0 +1,14 @@
+name: Test
+
+on:
+  push:
+    pranches:
+      - merge-test
+
+jobs:
+  echo:
+    name: Echo hello
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step to echo hello
+        run: echo 'Hello World!'
