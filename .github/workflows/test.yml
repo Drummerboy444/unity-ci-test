@@ -1,14 +1,11 @@
 name: Test
 
-on:
-  push:
-    branches:
-      - master
+on: pull_request
 
 jobs:
   echo:
     name: Echo hello
     runs-on: ubuntu-latest
     steps:
-      - name: Step to echo hello
-        run: echo 'Hello World!'
+      - name: Try to fail
+        run: exit 0
