@@ -7,5 +7,5 @@ jobs:
     name: Echo hello
     runs-on: ubuntu-latest
     steps:
-      - name: Step to echo hello
-        run: echo 'Hello World again again!'
+      - name: Try to fail
+        run: return 1
